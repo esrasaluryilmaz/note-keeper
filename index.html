@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notekeeper</title>
+    <!--* Css Link -->
+    <link rel="stylesheet" href="style.css" />
+    <!--* Box Icons link-->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!--* Wrapper-->
+    <div class="wrapper">
+      <!-- Ekleme Alani -->
+      <li class="add-box">
+        <div class="icon">
+          <i class="bx bx-plus"></i>
+        </div>
+        <p>Add new note</p>
+      </li>
+
+      <li class="note">
+        <!--Details-->
+        <div class="details">
+          <p class="title">Note Baslik</p>
+          <p class="description">Note Aciklama</p>
+        </div>
+        <!--Bottom-->
+        <div class="bottom-content">
+          <span>january 16, 2025</span>
+          <div class="settings">
+            <i class="bx bx-dots-horizontal-rounded"></i>
+            <ul class="menu">
+              <li><i class="bx bx-edit-alt"></i>Duzenle</li>
+              <li><i class="bx bx-trash"></i>Sil</li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </div>
+    <!--* Js Baglanti -->
+    <script src="./main.js"></script>
+  </body>
+</html>
