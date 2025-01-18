@@ -13,18 +13,17 @@
     />
   </head>
   <body>
-    <!--* Wrapper-->
+    <!-- * Wrapper -->
     <div class="wrapper">
-      <!-- Ekleme Alani -->
+      <!-- Ekleme Alanı -->
       <li class="add-box">
         <div class="icon">
           <i class="bx bx-plus"></i>
         </div>
         <p>Add new note</p>
       </li>
-
       <li class="note">
-        <!--Details-->
+        <!-- Details -->
         <div class="details">
           <p class="title">Note Baslik</p>
           <p class="description">Note Aciklama</p>
@@ -41,6 +40,28 @@
           </div>
         </div>
       </li>
+      <li class="note">
+        <!-- Details -->
+        <div class="details">
+          <p class="title">Note Başlık</p>
+          <p class="description">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Reprehenderit tempora cum laborum, voluptatem modi porro ullam
+            soluta doloremque. Perferendis quam dolor ad voluptas repellendus
+          </p>
+        </div>
+        <!-- Bottom -->
+        <div class="bottom-content">
+          <span>January 6 ,2025</span>
+          <div class="settings">
+            <i class="bx bx-dots-horizontal-rounded"></i>
+            <ul class="menu">
+              <li><i class="bx bx-edit"></i> Düzenle</li>
+              <li><i class="bx bx-trash"></i> Sil</li>
+            </ul>
+          </div>
+        </div>
+      </li>
     </div>
     <!--* Popup-->
     <div class="popup-box">
@@ -53,17 +74,17 @@
           </header>
           <!--*Form-->
           <form>
-            <!--*Title-->
+            <!-- Title -->
             <div class="row title">
               <label>Title</label>
               <input type="text" />
             </div>
-            <!--*Description-->
+            <!-- Description -->
             <div class="row description">
               <label>Description</label>
               <textarea></textarea>
             </div>
-            <button type="submit">Add Note</button>
+            <button id="submit-btn" type="submit">Add Note</button>
           </form>
         </div>
       </div>
