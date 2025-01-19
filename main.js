@@ -50,6 +50,7 @@ function showMenu(elem) {
 
   //Tiklanilan yer menu kismi haricindeyse show clasini kaldir
   document.addEventListener("click", (e) => {
+    //Tiklanilan kisim i etiketi degilse yada kapsam disindaysa show classini kaldir.
     if (e.target.tagName != "I" || e.target != elem) {
       elem.parentElement.classList.remove("show");
     }
@@ -58,9 +59,28 @@ function showMenu(elem) {
 
 //Wrapper kismindaki tiklanmari izle
 wrapper.addEventListener("click", (e) => {
+  //Eger uc noktaya tiklanildiysa
   if (e.target.classList.contains("bx-dots-horizontal-rounded")) {
     showMenu(e.target);
   }
+  //eger sil noktaya tiklanildiysa
+  else if (e.target.classList.contains("deleteIcon")) {
+    const res = confrim("Bu notu silmek istediginize emin misiniz?");
+    if (res) {
+      //Tiklanilan note elemanina eris
+      const note = e.target.closest(".note");
+      // Notun idesine eris
+      const noteId = note.dataset.id;
+      //note dizisini don  ve id'si noteid'ye esit olan elemani diziden kaldir
+      notes = notes.filter((note) => note.id != noteId);
+      // localStorage'i guncelle
+      localStorage.setItem("notes", JSON.stringify(notes));
+
+      //renderNotes fonksynunu calistir
+      renderNotes();
+    }
+  }
+  //eger  guncelle ikonuna tiklanildiysa
 });
 // Form'a bir olay izleyicisi ekle ve form icerisindeki verilere eris
 form.addEventListener("submit", (e) => {
@@ -80,7 +100,7 @@ form.addEventListener("submit", (e) => {
   }
   // eger title ve description degerleri varsa gerekli bilgileri olustur.
   const date = new Date();
-
+  let id = new Date().getTime();
   let day = date.getDate();
   let year = date.getFullYear();
   let month = months[date.getMonth()];
@@ -91,6 +111,7 @@ form.addEventListener("submit", (e) => {
     title,
     description,
     date: `${month} ${day}, ${year}`,
+    id,
   };
 
   // noteInfo objesini notes dizisine ekle
@@ -125,7 +146,7 @@ function renderNotes() {
 
   // Note dizisindeki her bir eleman icin ekrana bir note karti render et
   notes.forEach((note) => {
-    let liTag = `<li class="note">
+    let liTag = `<li class="note" data-id='${note.id}'>
         
         <div class="details">
           <p class="title">${note.title}</p>
@@ -139,8 +160,8 @@ function renderNotes() {
           <div class="settings">
             <i class="bx bx-dots-horizontal-rounded"></i>
             <ul class="menu">
-              <li><i class="bx bx-edit"></i> Düzenle</li>
-              <li><i class="bx bx-trash"></i> Sil</li>
+              <li class='updateIcon'><i class="bx bx-edit"></i> Düzenle</li>
+              <li class='deleteIcon'><i class="bx bx-trash"></i> Sil</li>
             </ul>
           </div>
         </div>
