@@ -220,7 +220,7 @@ header {
 .popup .content .row textarea {
   resize: none;
   height: 150px;
-  padding: 8px, 15px;
+  padding: 8px, 0;
 }
 
 .popup .content form button {

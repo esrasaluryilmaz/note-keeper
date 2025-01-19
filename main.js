@@ -21,9 +21,15 @@ const popupBox = document.querySelector(".popup");
 const closeBtn = document.querySelector("header i");
 const form = document.querySelector("form");
 const wrapper = document.querySelector(".wrapper");
+const popupTitle = document.querySelector("header p");
+const submitBtn = document.querySelector("#submit-btn");
 
 //! localstorage'dan notelari al
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+// ! Guncelleme icin gereken degiskeenler
+let isUpdate = false;
+let updateId = null;
 
 //AddBox'a tiklaninca bir fonksiyon tetikle
 addBox.addEventListener("click", () => {
@@ -59,28 +65,52 @@ function showMenu(elem) {
 
 //Wrapper kismindaki tiklanmari izle
 wrapper.addEventListener("click", (e) => {
-  //Eger uc noktaya tiklanildiysa
+  // Eğer üç noktaya tıklanıldıysa
   if (e.target.classList.contains("bx-dots-horizontal-rounded")) {
     showMenu(e.target);
   }
-  //eger sil noktaya tiklanildiysa
+  // Eğer sil ikonuna tıklandıldıysa
   else if (e.target.classList.contains("deleteIcon")) {
-    const res = confrim("Bu notu silmek istediginize emin misiniz?");
+    const res = confirm("Bu notu silmek istediğinize eminmisiniz ?");
     if (res) {
-      //Tiklanilan note elemanina eris
+      // Tıklanılan note elemanına eriş
       const note = e.target.closest(".note");
-      // Notun idesine eris
+      // Notun idsine eriş
       const noteId = note.dataset.id;
-      //note dizisini don  ve id'si noteid'ye esit olan elemani diziden kaldir
+      // Notes dizisini dön ve id'si noteId'ye eşit olan elemanı diziden kaldır
       notes = notes.filter((note) => note.id != noteId);
-      // localStorage'i guncelle
+
+      // localStorage'ı güncelle
       localStorage.setItem("notes", JSON.stringify(notes));
 
-      //renderNotes fonksynunu calistir
+      // renderNotes fonksiyonunu çalıştır
       renderNotes();
     }
   }
   //eger  guncelle ikonuna tiklanildiysa
+  else if (e.target.classList.contains("updateIcon")) {
+    //Tiklanilan note elemanina eris
+    const note = e.target.closest(".note");
+    //note elemaninin id  sine eris
+    const noteId = parseInt(note.dataset.id);
+    //Note dizisi icerisinde id'si bilinen elemani bul
+    const foundedNote = notes.find((note) => note.id === noteId);
+
+    //popup icerisindeki elemanlara note degerlerini ata
+    form[0].value = foundedNote.title;
+    form[1].value = foundedNote.description;
+    //Popup i ac
+    popupBoxContainer.classList.add("show");
+    popupBox.classList.add("show");
+
+    //Guncelleme modunu aktif et
+    isUpdate = true;
+    updateId = noteId;
+
+    //Popup icerisindeki gerekli olanlari update e gore duzenle
+    popupTitle.textContent = "Update Note";
+    submitBtn.textContent = "Update";
+  }
 });
 // Form'a bir olay izleyicisi ekle ve form icerisindeki verilere eris
 form.addEventListener("submit", (e) => {
@@ -105,17 +135,38 @@ form.addEventListener("submit", (e) => {
   let year = date.getFullYear();
   let month = months[date.getMonth()];
 
-  // Elde edilen verileri bir note objesi altinda topla
+  // eger guncelleme modundaysa
+  if (isUpdate) {
+    // Guncelleme yapilacak elemanin dizi icerisindeki indexini bul
+    const noteIndex = notes.findIndex((note) => {
+      return note.id == updateId;
+    });
+    console.log(noteIndex);
+    // Dizi icerisinde yukarida bulunan index'deki elemanin degerlerini guncelle
+    notes[noteIndex + 1] = {
+      ...notes[noteIndex],
+      title,
+      description,
+      id,
+      date: `${month} ${day}, ${year}`,
+    };
 
-  let noteInfo = {
-    title,
-    description,
-    date: `${month} ${day}, ${year}`,
-    id,
-  };
+    isUpdate = false;
+    updateId = null;
+    popupTitle.textContent = "New Note";
+    submitBtn.textContent = "Add Note";
+  } else {
+    // Elde edilen verileri bir note objesi altinda topla
 
-  // noteInfo objesini notes dizisine ekle
-  notes.push(noteInfo);
+    let noteInfo = {
+      title,
+      description,
+      date: `${month} ${day}, ${year}`,
+      id,
+    };
+    // noteInfo objesini notes dizisine ekle
+    notes.push(noteInfo);
+  }
 
   //Note objesini localstorage ekle
   localStorage.setItem("notes", JSON.stringify(notes));
